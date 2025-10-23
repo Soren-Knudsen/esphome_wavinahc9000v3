@@ -306,8 +306,8 @@ bool WavinAHC9000::read_registers(uint8_t category, uint8_t page, uint8_t index,
     ESP_LOGD(TAG, "TX: addr=0x%02X fc=0x%02X cat=%u idx=%u page=%u cnt=%u attempt=%u", msg[0], msg[1], category, index, page, count, (unsigned) attempt + 1);
     this->write_array(msg, 8);
     this->flush();
-  // Allow line to settle; at 9600 baud 250us is < one char time but sufficient for DE switching.
-  delayMicroseconds(250);
+  // Allow line to settle; at 9600 baud 750us is < one char time but sufficient for DE switching.
+  delayMicroseconds(750);
   if (this->tx_enable_pin_ != nullptr) this->tx_enable_pin_->digital_write(false);
   if (this->flow_control_pin_ != nullptr) this->flow_control_pin_->digital_write(false); // back to RX ASAP
 
@@ -375,7 +375,7 @@ bool WavinAHC9000::write_register(uint8_t category, uint8_t page, uint8_t index,
     ESP_LOGD(TAG, "TX-WR: cat=%u idx=%u page=%u val=0x%04X attempt=%u", category, index, page, (unsigned) value, (unsigned) attempt + 1);
     this->write_array(msg, 10);
     this->flush();
-  delayMicroseconds(250);
+  delayMicroseconds(750);
   if (this->tx_enable_pin_ != nullptr) this->tx_enable_pin_->digital_write(false);
   if (this->flow_control_pin_ != nullptr) this->flow_control_pin_->digital_write(false);
 
@@ -439,7 +439,7 @@ bool WavinAHC9000::write_masked_register(uint8_t category, uint8_t page, uint8_t
     ESP_LOGD(TAG, "TX-WM: cat=%u idx=%u page=%u and=0x%04X or=0x%04X attempt=%u", category, index, page, (unsigned) and_mask, (unsigned) or_mask, (unsigned) attempt + 1);
     this->write_array(msg, 12);
     this->flush();
-  delayMicroseconds(250);
+  delayMicroseconds(750);
   if (this->tx_enable_pin_ != nullptr) this->tx_enable_pin_->digital_write(false);
   if (this->flow_control_pin_ != nullptr) this->flow_control_pin_->digital_write(false);
 
